@@ -44,8 +44,7 @@ class LoginViewModel @Inject constructor(
               TODO("Navigate to user list")
             }
             false -> {
-              val message = result.exceptionOrNull()?.message ?: "Login error"
-              eventChannel.send(Event.FailedToLogin(message))
+              eventChannel.send(Event.FailedToLogin(result.errorMessage))
             }
           }
 
