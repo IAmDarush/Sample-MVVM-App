@@ -33,6 +33,7 @@ class LoginViewModelTest {
   val rule = InstantTaskExecutorRule()
 
   private lateinit var vm: LoginViewModel
+  private val eventsList = mutableListOf<LoginViewModel.Event>()
 
   @Mock
   private lateinit var mockApiService: ApiService
@@ -42,23 +43,22 @@ class LoginViewModelTest {
   fun setup() {
     Dispatchers.setMain(dispatcher)
     vm = LoginViewModel(mockApiService)
+    vm.viewModelScope.launch {
+      vm.eventsFlow.collect {
+        eventsList.add(it)
+      }
+    }
   }
 
   @ExperimentalCoroutinesApi
   @After
   fun tearDown() {
     Dispatchers.resetMain()
+    eventsList.clear()
   }
 
   @Test
   fun givenUserClicksLogin_whenUsernameOrPasswordIsEmpty_thenShowRelevantErrorMessage() {
-    val eventsList = mutableListOf<LoginViewModel.Event>()
-    vm.viewModelScope.launch {
-      vm.eventsFlow.collect {
-        eventsList.add(it)
-      }
-    }
-
     vm.login("", "", "")
 
     assertEquals(1, eventsList.size)
@@ -68,13 +68,6 @@ class LoginViewModelTest {
 
   @Test
   fun givenUserClicksLogin_whenUsernameOrPasswordIncorrect_thenShowError(): Unit = runBlocking {
-    val eventsList = mutableListOf<LoginViewModel.Event>()
-    vm.viewModelScope.launch {
-      vm.eventsFlow.collect {
-        eventsList.add(it)
-      }
-    }
-
     val userName = "user_name"
     val password = "pass_word"
     val country = "abc"
