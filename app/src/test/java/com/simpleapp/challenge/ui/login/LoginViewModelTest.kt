@@ -1,5 +1,6 @@
 package com.simpleapp.challenge.ui.login
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.simpleapp.challenge.data.remote.ApiService
 import kotlinx.coroutines.Dispatchers
@@ -12,6 +13,7 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -22,6 +24,9 @@ class LoginViewModelTest {
 
   @ExperimentalCoroutinesApi
   val dispatcher = TestCoroutineDispatcher()
+
+  @get:Rule
+  val rule = InstantTaskExecutorRule()
 
   private lateinit var vm: LoginViewModel
 
