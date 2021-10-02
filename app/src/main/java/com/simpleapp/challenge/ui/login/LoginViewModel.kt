@@ -1,5 +1,7 @@
 package com.simpleapp.challenge.ui.login
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.simpleapp.challenge.data.model.LoginModel
@@ -24,7 +26,12 @@ class LoginViewModel @Inject constructor(
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
   val eventsFlow: Flow<Event> = eventChannel.receiveAsFlow()
 
+  private val _showLoading = MutableLiveData(false)
+  val showLoading: LiveData<Boolean> = _showLoading
+
   fun login(userName: String, password: String, country: String) {
+    _showLoading.value = true
+
     val model = LoginModel(userName, password, country)
 
     when (validateInputs(model)) {
@@ -42,9 +49,11 @@ class LoginViewModel @Inject constructor(
             }
           }
 
+          _showLoading.value = false
         }
       }
       false -> {
+        _showLoading.value = false
         eventChannel.trySend(Event.FailedToValidateAllInputFields)
       }
     }

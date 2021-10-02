@@ -57,7 +57,8 @@ class LoginViewModelTest {
 
     vm.login("", "", "")
     assertEquals(1, eventsList.size)
-    assertEquals(eventsList[0], LoginViewModel.Event.FailedToValidateAllInputFields)
+    assertEquals(LoginViewModel.Event.FailedToValidateAllInputFields, eventsList[0])
+    assertEquals(false, vm.showLoading.value)
   }
 
   @Test
