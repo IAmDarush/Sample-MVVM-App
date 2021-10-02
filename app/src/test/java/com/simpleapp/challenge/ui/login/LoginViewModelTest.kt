@@ -32,11 +32,11 @@ class LoginViewModelTest {
   @get:Rule
   val rule = InstantTaskExecutorRule()
 
-  private lateinit var vm: LoginViewModel
-  private val eventsList = mutableListOf<LoginViewModel.Event>()
-
   @Mock
   private lateinit var mockApiService: ApiService
+
+  private lateinit var vm: LoginViewModel
+  private val eventsList = mutableListOf<LoginViewModel.Event>()
 
   @ExperimentalCoroutinesApi
   @Before
@@ -84,8 +84,22 @@ class LoginViewModelTest {
   }
 
   @Test
-  fun givenUserClicksLogin_whenUsernameAndPasswordCorrect_thenNavigateToUserListScreen() {
+  fun givenUserClicksLogin_whenUsernameAndPasswordCorrect_thenNavigateToUserListScreen(): Unit =
+    runBlocking {
+      val userName = "correct_username"
+      val password = "correct_password"
+      val country = "the_country"
+      val token = "mock_token"
+      val mockResponse =
+        LoginResponse(isSuccess = true, errorMessage = "", errorCode = 200, token = token)
 
-  }
+      doReturn(mockResponse).`when`(mockApiService).login(any())
+
+      vm.login(userName = userName, password = password, country = country)
+
+      assertEquals(1, eventsList.size)
+      assertEquals(LoginViewModel.Event.NavigateToUserList, eventsList[0])
+      assertEquals(false, vm.showLoading.value)
+    }
 
 }
