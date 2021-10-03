@@ -1,12 +1,16 @@
 <resources>
   <string name="app_name">Simple App</string>
   <string name="title_activity_login">LoginActivity</string>
-  <string name="prompt_email">Email</string>
+  <string name="prompt_username">User name</string>
+  <string name="login_error_username_is_required">User name is required</string>
   <string name="prompt_password">Password</string>
+  <string name="login_error_password">Password is required</string>
   <string name="action_sign_in">Sign in or register</string>
   <string name="action_sign_in_short">Sign in</string>
   <string name="welcome">"Welcome !"</string>
   <string name="invalid_username">Not a valid username</string>
   <string name="invalid_password">Password must be >5 characters</string>
   <string name="login_failed">"Login failed"</string>
+  <string name="login_toast_fill_all_inputs">Please fill all the inputs</string>
+  <string name="login_toast_unknown_server_error">Unknown server error</string>
 </resources>
