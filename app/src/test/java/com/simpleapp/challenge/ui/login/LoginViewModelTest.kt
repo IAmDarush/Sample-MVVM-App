@@ -19,6 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.mockito.Mockito.doReturn
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
@@ -99,6 +100,19 @@ class LoginViewModelTest {
 
       assertEquals(1, eventsList.size)
       assertEquals(LoginViewModel.Event.NavigateToUserList, eventsList[0])
+      assertEquals(false, vm.showLoading.value)
+    }
+
+  @Test
+  fun givenUserWantsToLogin_whenServerThrowsException_thenShowTheErrorMessage(): Unit =
+    runBlocking {
+      val errorMessage = "Server error!"
+      `when`(mockApiService.login(any())).thenAnswer { throw java.lang.Exception(errorMessage) }
+
+      vm.login("userName", "Password", "country")
+
+      assertEquals(1, eventsList.size)
+      assertEquals(LoginViewModel.Event.FailedToLogin(errorMessage), eventsList[0])
       assertEquals(false, vm.showLoading.value)
     }
 

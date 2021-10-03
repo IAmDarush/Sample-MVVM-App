@@ -21,7 +21,7 @@ class LoginViewModel @Inject constructor(
   sealed class Event {
     object FailedToValidateAllInputFields : Event()
     data class FailedToLogin(val errorMessage: String) : Event()
-    object NavigateToUserList: Event()
+    object NavigateToUserList : Event()
   }
 
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -38,18 +38,25 @@ class LoginViewModel @Inject constructor(
     when (validateInputs(model)) {
       true  -> {
         viewModelScope.launch {
-          val result = apiService.login(model)
 
-          when (result.isSuccess) {
-            true  -> {
-              eventChannel.send(Event.NavigateToUserList)
+          try {
+            val result = apiService.login(model)
+
+            when (result.isSuccess) {
+              true  -> {
+                eventChannel.send(Event.NavigateToUserList)
+              }
+              false -> {
+                eventChannel.send(Event.FailedToLogin(result.errorMessage))
+              }
             }
-            false -> {
-              eventChannel.send(Event.FailedToLogin(result.errorMessage))
-            }
+
           }
-
+          catch (e: Exception) {
+            eventChannel.send(Event.FailedToLogin(e.message ?: ""))
+          }
           _showLoading.value = false
+
         }
       }
       false -> {
