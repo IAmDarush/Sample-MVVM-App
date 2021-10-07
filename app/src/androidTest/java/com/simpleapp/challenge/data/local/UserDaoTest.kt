@@ -42,4 +42,17 @@ class UserDaoTest {
     assertThat(byUsername, equalTo(user))
   }
 
+  @Test
+  fun getUserByUsernameAndPassword() = runBlocking {
+    val user1 = User(username = "john", password = "1234", country = "UK")
+    val user2 = User(username = "tom", password = "abcd", country = "France")
+    userDao.addUser(user1)
+    userDao.addUser(user2)
+
+    val userByUsernameAndPassword =
+      userDao.getUserByUsernameAndPassword(username = "tom", password = "abcd")
+
+    assertThat(userByUsernameAndPassword, equalTo(user2))
+  }
+
 }
