@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,6 +54,22 @@ class UserDaoTest {
       userDao.getByUsernameAndPassword(username = "john", password = "1234")
 
     assertThat(userByUsernameAndPassword, equalTo(user1))
+  }
+
+  @Test
+  fun insertAndGetAllUsers() = runBlocking {
+    val userList = listOf(
+      User(username = "john", password = "1234", country = "UK", userId = 1),
+      User(username = "tom", password = "abcd", country = "France", userId = 2)
+    )
+
+    userDao.insertAll(userList)
+
+    val allUsers = userDao.getAll()
+
+    assertEquals(allUsers.size, 2)
+    assertThat(allUsers[0], equalTo(userList[0]))
+    assertThat(allUsers[1], equalTo(userList[1]))
   }
 
 }
