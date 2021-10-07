@@ -3,7 +3,9 @@ package com.simpleapp.challenge.di
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
+import androidx.room.Room
 import com.simpleapp.challenge.BuildConfig
+import com.simpleapp.challenge.data.local.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +17,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApplicationModule {
+
+  private const val DATABASE_NAME: String = "user-list.db"
 
   @Provides
   @Singleton
@@ -30,5 +34,14 @@ object ApplicationModule {
   fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
     return context.getSharedPreferences("SimpleAppPreferences", Context.MODE_PRIVATE)
   }
+
+  @Provides
+  @Singleton
+  fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
+    Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME).build()
+
+  @Provides
+  @Singleton
+  fun provideUserDao(database: AppDatabase) = database.userDao()
 
 }
