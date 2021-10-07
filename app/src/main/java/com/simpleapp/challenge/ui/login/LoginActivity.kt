@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.simpleapp.challenge.R
 import com.simpleapp.challenge.databinding.ActivityLoginBinding
+import com.simpleapp.challenge.ui.login.LoginViewModel.Event
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     lifecycleScope.launchWhenResumed {
       viewModel.eventsFlow.collect { event ->
         when (event) {
-          LoginViewModel.Event.FailedToValidateAllInputFields -> {
+          Event.FailedToValidateAllInputFields -> {
             if (binding.username.text.isEmpty()) {
               binding.username.error = getString(R.string.login_error_username_is_required)
             }
@@ -36,20 +37,29 @@ class LoginActivity : AppCompatActivity() {
               binding.password.error = getString(R.string.login_error_password)
             }
 
-            Toast.makeText(
-              applicationContext,
-              getString(R.string.login_toast_fill_all_inputs),
-              Toast.LENGTH_SHORT
-            ).show()
+            val message = getString(R.string.login_toast_fill_all_inputs)
+            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
           }
-          is LoginViewModel.Event.FailedToLogin               -> {
+          is Event.FailedToLogin               -> {
             var errorMessage = event.errorMessage
             if (errorMessage.isEmpty()) errorMessage =
               getString(R.string.login_toast_unknown_server_error)
             Toast.makeText(applicationContext, errorMessage, Toast.LENGTH_SHORT).show()
           }
-          else                                                -> {
-
+          is Event.IncorrectPassword           -> {
+            val message = getString(R.string.login_prompt_incorrect_password)
+            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+          }
+          is Event.SuccessfullyRegistered      -> {
+            val message = getString(R.string.login_prompt_register_successful)
+            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+          }
+          is Event.SuccessfullyLoggedIn        -> {
+            val message = getString(R.string.login_prompt_login_successful)
+            Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+          }
+          is Event.NavigateToUserList          -> {
+            Toast.makeText(applicationContext, "Navigate to user list", Toast.LENGTH_SHORT).show()
           }
         }
       }

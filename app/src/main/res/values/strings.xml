@@ -13,4 +13,7 @@
   <string name="login_failed">"Login failed"</string>
   <string name="login_toast_fill_all_inputs">Please fill all the inputs</string>
   <string name="login_toast_unknown_server_error">Unknown server error</string>
+  <string name="login_prompt_incorrect_password">Incorrect password</string>
+  <string name="login_prompt_login_successful">Successfully logged in</string>
+  <string name="login_prompt_register_successful">Successfully registered</string>
 </resources>
