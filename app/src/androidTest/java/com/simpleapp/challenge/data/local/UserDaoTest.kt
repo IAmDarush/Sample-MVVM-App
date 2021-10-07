@@ -10,6 +10,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.IsEqual.equalTo
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -70,6 +71,20 @@ class UserDaoTest {
     assertEquals(allUsers.size, 2)
     assertThat(allUsers[0], equalTo(userList[0]))
     assertThat(allUsers[1], equalTo(userList[1]))
+  }
+
+  @Test
+  fun deleteUser() = runBlocking {
+    val user = User(username = "john", password = "1234", country = "UK", userId = 1)
+    userDao.insert(user)
+
+    val insertedUser = userDao.findByUsername("john")
+    assertEquals(insertedUser, user)
+
+    userDao.delete(user)
+    val deletedUser = userDao.findByUsername("john")
+
+    assertNull(deletedUser)
   }
 
 }

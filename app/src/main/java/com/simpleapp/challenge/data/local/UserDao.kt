@@ -1,6 +1,7 @@
 package com.simpleapp.challenge.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -23,5 +24,8 @@ interface UserDao {
 
   @Query("SELECT * FROM Users")
   fun getAll(): List<User>
+
+  @Delete
+  fun delete(user: User)
 
 }
