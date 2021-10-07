@@ -10,12 +10,12 @@ import com.simpleapp.challenge.data.model.User
 interface UserDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun addUser(user: User)
+  suspend fun insert(user: User)
 
   @Query("SELECT * FROM Users WHERE username=:username")
-  suspend fun getUserByUsername(username: String): User?
+  suspend fun findByUsername(username: String): User?
 
   @Query("SELECT * FROM Users WHERE username=:username AND Password=:password")
-  fun getUserByUsernameAndPassword(username: String, password: String): User?
+  fun getByUsernameAndPassword(username: String, password: String): User?
 
 }

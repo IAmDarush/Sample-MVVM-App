@@ -36,23 +36,23 @@ class UserDaoTest {
   @Test
   @Throws(Exception::class)
   fun insertAndGetUser() = runBlocking {
-    val user = User(username = "john", password = "1234", country = "UK")
-    userDao.addUser(user)
-    val byUsername = userDao.getUserByUsername("john")
+    val user = User(username = "john", password = "1234", country = "UK", userId = 1)
+    userDao.insert(user)
+    val byUsername = userDao.findByUsername("john")
     assertThat(byUsername, equalTo(user))
   }
 
   @Test
   fun getUserByUsernameAndPassword() = runBlocking {
-    val user1 = User(username = "john", password = "1234", country = "UK")
-    val user2 = User(username = "tom", password = "abcd", country = "France")
-    userDao.addUser(user1)
-    userDao.addUser(user2)
+    val user1 = User(username = "john", password = "1234", country = "UK", userId = 1)
+    val user2 = User(username = "tom", password = "abcd", country = "France", userId = 2)
+    userDao.insert(user1)
+    userDao.insert(user2)
 
     val userByUsernameAndPassword =
-      userDao.getUserByUsernameAndPassword(username = "tom", password = "abcd")
+      userDao.getByUsernameAndPassword(username = "john", password = "1234")
 
-    assertThat(userByUsernameAndPassword, equalTo(user2))
+    assertThat(userByUsernameAndPassword, equalTo(user1))
   }
 
 }
