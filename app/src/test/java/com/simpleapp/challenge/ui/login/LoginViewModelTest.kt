@@ -2,8 +2,9 @@ package com.simpleapp.challenge.ui.login
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
-import com.simpleapp.challenge.data.model.LoginResponse
-import com.simpleapp.challenge.data.remote.ApiService
+import com.simpleapp.challenge.data.model.User
+import com.simpleapp.challenge.data.repository.AuthRepository
+import com.simpleapp.challenge.ui.login.LoginViewModel.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -19,10 +20,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito
 import org.mockito.Mockito.doReturn
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
 
 @RunWith(MockitoJUnitRunner::class)
 class LoginViewModelTest {
@@ -34,16 +34,16 @@ class LoginViewModelTest {
   val rule = InstantTaskExecutorRule()
 
   @Mock
-  private lateinit var mockApiService: ApiService
+  private lateinit var mockAuthRepository: AuthRepository
 
   private lateinit var vm: LoginViewModel
-  private val eventsList = mutableListOf<LoginViewModel.Event>()
+  private val eventsList = mutableListOf<Event>()
 
   @ExperimentalCoroutinesApi
   @Before
   fun setup() {
     Dispatchers.setMain(dispatcher)
-    vm = LoginViewModel(mockApiService)
+    vm = LoginViewModel(mockAuthRepository)
     vm.viewModelScope.launch {
       vm.eventsFlow.collect {
         eventsList.add(it)
@@ -59,61 +59,57 @@ class LoginViewModelTest {
   }
 
   @Test
-  fun givenUserClicksLogin_whenUsernameOrPasswordIsEmpty_thenShowRelevantErrorMessage() {
+  fun givenUserClicksLogin_whenUsernameOrPasswordIsEmpty_thenShowInputValidationErrorMessage() {
     vm.login("", "", "")
 
     assertEquals(1, eventsList.size)
-    assertEquals(LoginViewModel.Event.FailedToValidateAllInputFields, eventsList[0])
+    assertEquals(Event.FailedToValidateAllInputFields, eventsList[0])
     assertEquals(false, vm.showLoading.value)
   }
 
   @Test
-  fun givenUserClicksLogin_whenUsernameOrPasswordIncorrect_thenShowError(): Unit = runBlocking {
-    val userName = "user_name"
-    val password = "pass_word"
-    val country = "abc"
-    val mockResponse =
-      LoginResponse(isSuccess = false, errorMessage = "Wrong password", errorCode = 400, token = "")
+  fun givenUserClicksLogin_whenPasswordIsIncorrect_thenShowPasswordIncorrectError(): Unit =
+    runBlocking {
+      val user = User.create("john", "1234", "UK")
+      doReturn(user).`when`(mockAuthRepository).getUserByUsername(user.username)
 
-    doReturn(mockResponse).`when`(mockApiService).login(any())
+      vm.login(userName = "john", password = "1235", country = "UK")
 
-    vm.login(userName = userName, password = password, country = country)
-
-    assertEquals(1, eventsList.size)
-    assertEquals(LoginViewModel.Event.FailedToLogin(mockResponse.errorMessage), eventsList[0])
-    assertEquals(false, vm.showLoading.value)
-  }
+      assertEquals(1, eventsList.size)
+      assertEquals(Event.IncorrectPassword, eventsList[0])
+      assertEquals(false, vm.showLoading.value)
+      Mockito.verify(mockAuthRepository, Mockito.times(1)).getUserByUsername("john")
+    }
 
   @Test
   fun givenUserClicksLogin_whenUsernameAndPasswordCorrect_thenNavigateToUserListScreen(): Unit =
     runBlocking {
-      val userName = "correct_username"
-      val password = "correct_password"
-      val country = "the_country"
-      val token = "mock_token"
-      val mockResponse =
-        LoginResponse(isSuccess = true, errorMessage = "", errorCode = 200, token = token)
+      val user = User.create("john", "1234", "UK")
+      doReturn(user).`when`(mockAuthRepository).getUserByUsername(user.username)
 
-      doReturn(mockResponse).`when`(mockApiService).login(any())
+      vm.login(userName = "john", password = "1234", country = "UK")
 
-      vm.login(userName = userName, password = password, country = country)
-
-      assertEquals(1, eventsList.size)
-      assertEquals(LoginViewModel.Event.NavigateToUserList, eventsList[0])
+      assertEquals(2, eventsList.size)
+      assertEquals(Event.SuccessfullyLoggedIn, eventsList[0])
+      assertEquals(Event.NavigateToUserList, eventsList[1])
       assertEquals(false, vm.showLoading.value)
+      Mockito.verify(mockAuthRepository, Mockito.times(1)).getUserByUsername("john")
     }
 
   @Test
-  fun givenUserWantsToLogin_whenServerThrowsException_thenShowTheErrorMessage(): Unit =
+  fun givenUserClicksLogin_whenUserIsNotAlreadyRegistered_thenRegisterTheUserAndNavigateToUserListScreen(): Unit =
     runBlocking {
-      val errorMessage = "Server error!"
-      `when`(mockApiService.login(any())).thenAnswer { throw java.lang.Exception(errorMessage) }
+      val user = User.create("john", "1234", "UK")
+      doReturn(null).`when`(mockAuthRepository).getUserByUsername(user.username)
 
-      vm.login("userName", "Password", "country")
+      vm.login(userName = "john", password = "1234", country = "UK")
 
-      assertEquals(1, eventsList.size)
-      assertEquals(LoginViewModel.Event.FailedToLogin(errorMessage), eventsList[0])
+      assertEquals(2, eventsList.size)
+      assertEquals(Event.SuccessfullyRegistered, eventsList[0])
+      assertEquals(Event.NavigateToUserList, eventsList[1])
       assertEquals(false, vm.showLoading.value)
+      Mockito.verify(mockAuthRepository, Mockito.times(1)).getUserByUsername("john")
+      Mockito.verify(mockAuthRepository, Mockito.times(1)).registerUser(user)
     }
 
 }

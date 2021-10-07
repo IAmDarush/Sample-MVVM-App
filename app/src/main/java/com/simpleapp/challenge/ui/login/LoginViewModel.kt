@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.simpleapp.challenge.data.model.LoginModel
+import com.simpleapp.challenge.data.model.User
 import com.simpleapp.challenge.data.remote.ApiService
+import com.simpleapp.challenge.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -15,13 +17,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-  private val apiService: ApiService
+  private val authRepository: AuthRepository
 ) : ViewModel() {
 
   sealed class Event {
     object FailedToValidateAllInputFields : Event()
     data class FailedToLogin(val errorMessage: String) : Event()
+    object IncorrectPassword : Event()
     object NavigateToUserList : Event()
+    object SuccessfullyRegistered : Event()
+    object SuccessfullyLoggedIn : Event()
   }
 
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -40,14 +45,22 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
 
           try {
-            val result = apiService.login(model)
-
-            when (result.isSuccess) {
-              true  -> {
+            when (val user = authRepository.getUserByUsername(model.userName)) {
+              null -> {
+                val newUser =
+                  User.create(username = userName, password = password, country = country)
+                authRepository.registerUser(newUser)
+                eventChannel.send(Event.SuccessfullyRegistered)
                 eventChannel.send(Event.NavigateToUserList)
               }
-              false -> {
-                eventChannel.send(Event.FailedToLogin(result.errorMessage))
+              else -> {
+                if (user.password != password) {
+                  eventChannel.send(Event.IncorrectPassword)
+                }
+                else {
+                  eventChannel.send(Event.SuccessfullyLoggedIn)
+                  eventChannel.send(Event.NavigateToUserList)
+                }
               }
             }
 
