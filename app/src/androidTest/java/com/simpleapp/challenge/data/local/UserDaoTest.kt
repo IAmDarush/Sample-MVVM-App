@@ -87,4 +87,19 @@ class UserDaoTest {
     assertNull(deletedUser)
   }
 
+  @Test
+  fun deleteAllUsers() = runBlocking {
+    val userList = listOf(
+      User(username = "john", password = "1234", country = "UK", userId = 1),
+      User(username = "tom", password = "abcd", country = "France", userId = 2)
+    )
+    userDao.insertAll(userList)
+    val allInsertedUsers = userDao.getAll()
+    assertEquals(allInsertedUsers.size, 2)
+
+    userDao.deleteAllUsers()
+    val allUsersAfterDeletion = userDao.getAll()
+    assertEquals(allUsersAfterDeletion.size, 0)
+  }
+
 }
