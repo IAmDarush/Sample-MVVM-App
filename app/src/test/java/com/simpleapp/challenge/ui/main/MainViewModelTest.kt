@@ -65,8 +65,18 @@ class MainViewModelTest {
   }
 
   @Test
-  fun givenTheAppIsOpened_whenTheUserIsNotLoggedIn_thenNavigateToLoginScreen() {
+  fun givenTheAppIsOpened_whenTheUserIsNotLoggedIn_thenNavigateToLoginScreen(): Unit = runBlocking {
+    Mockito.`when`(mockAuthRepository.isUserLoggedIn()).thenReturn(true)
 
+    vm = MainViewModel(mockAuthRepository)
+    vm.viewModelScope.launch {
+      vm.eventsFlow.collect {
+        eventsList.add(it)
+      }
+    }
+
+    assertEquals(eventsList.size, 1)
+    assertEquals(eventsList[0], MainViewModel.Event.NavigateToUserList)
   }
 
 }

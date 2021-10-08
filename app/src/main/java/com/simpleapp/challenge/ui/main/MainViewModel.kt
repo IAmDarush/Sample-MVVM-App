@@ -15,6 +15,7 @@ class MainViewModel @Inject constructor(private val authRepository: AuthReposito
 
   sealed class Event {
     object NavigateToLogin : Event()
+    object NavigateToUserList: Event()
   }
 
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -28,7 +29,7 @@ class MainViewModel @Inject constructor(private val authRepository: AuthReposito
           eventChannel.send(Event.NavigateToLogin)
         }
         true  -> {
-          TODO("navigate to user list")
+          eventChannel.send(Event.NavigateToUserList)
         }
       }
     }
