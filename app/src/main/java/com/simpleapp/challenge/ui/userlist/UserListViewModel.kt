@@ -11,6 +11,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,17 +33,24 @@ class UserListViewModel @Inject constructor(
   private val _userListIsVisible = MutableLiveData(false)
   val userListIsVisible: LiveData<Boolean> = _userListIsVisible
 
+  private val _showLoading = MutableLiveData(false)
+  val showLoading: LiveData<Boolean> = _showLoading
+
   init {
 
     viewModelScope.launch {
+      _showLoading.value = true
       try {
         _userList.value = apiService.getUsers()
+        Timber.d("Fetched user list with size ${userList.value?.size}")
         _userListIsVisible.value = true
       }
       catch (e: Exception) {
+        Timber.e(e, "Failed to fetch the user list")
         _userListIsVisible.value = false
         eventChannel.send(Event.FailedToFetchUserList(e.message))
       }
+      _showLoading.value = false
     }
 
   }

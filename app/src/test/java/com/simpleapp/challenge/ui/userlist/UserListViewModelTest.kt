@@ -46,6 +46,7 @@ class UserListViewModelTest : BaseViewModelTest() {
 
       assertTrue(newUserList.isNotEmpty())
       assertEquals(vm.userListIsVisible.value, true)
+      assertEquals(false, vm.showLoading.value)
     }
 
   @Test
@@ -67,6 +68,7 @@ class UserListViewModelTest : BaseViewModelTest() {
       assertEquals(false, vm.userListIsVisible.value)
       assertEquals(1, events.size)
       assertEquals(Event.FailedToFetchUserList(errorMessage), events[0])
+      assertEquals(false, vm.showLoading.value)
     }
 
   @Test
