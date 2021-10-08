@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simpleapp.challenge.R
@@ -48,7 +49,7 @@ class UserListFragment : Fragment() {
 
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     binding = FragmentUserListBinding.inflate(inflater, container, false)
     binding.viewModel = viewModel
     binding.lifecycleOwner = viewLifecycleOwner
@@ -82,7 +83,9 @@ class UserListFragment : Fragment() {
   }
 
   private fun navigateToUserDetails() {
-    TODO("navigate to user details")
+    UserListFragmentDirections.actionUserListFragmentToUserDetailsFragment().let { direction ->
+      findNavController().navigate(direction)
+    }
   }
 
 }
