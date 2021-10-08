@@ -19,4 +19,6 @@
   <string name="login_checkbox_remember_login">remember login</string>
   <string name="userlist_prompt_failed_to_fetch_user_list">Failed to fetch the user list</string>
   <string name="action_logout">Logout</string>
+  <string name="title_activity_user_list">Users List</string>
+  <string name="title_fragment_user_details">User Details</string>
 </resources>
