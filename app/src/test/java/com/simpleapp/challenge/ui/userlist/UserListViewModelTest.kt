@@ -52,7 +52,8 @@ class UserListViewModelTest : BaseViewModelTest() {
   fun givenTheUserListIsOpened_whenUserListFetchFails_thenShowTheFailureMessage(): Unit =
     runBlocking {
       val errorMessage = "Server error!"
-      Mockito.`when`(mockApiService.getUsers()).thenAnswer { throw java.lang.Exception(errorMessage) }
+      Mockito.`when`(mockApiService.getUsers())
+        .thenAnswer { throw java.lang.Exception(errorMessage) }
 
       val events = mutableListOf<Event>()
 
@@ -69,8 +70,23 @@ class UserListViewModelTest : BaseViewModelTest() {
     }
 
   @Test
-  fun givenTheUserListIsReady_whenTheUserWantsToSeeTheUserDetails_thenNavigateToUserDetails() {
+  fun givenTheUserListIsReady_whenTheUserWantsToSeeTheUserDetails_thenNavigateToUserDetails(): Unit =
+    runBlocking {
 
-  }
+      Mockito.`when`(mockApiService.getUsers()).thenReturn(users)
+
+      vm = UserListViewModel(mockApiService)
+      val userList = vm.userList.value ?: listOf()
+      val events = mutableListOf<Event>()
+      vm.viewModelScope.launch {
+        vm.eventsFlow.collect { event ->
+          events.add(event)
+        }
+      }
+
+      vm.navigateToUserDetails(userList[0])
+
+      assertTrue(events.contains(Event.NavigateToUserDetails(userList[0])))
+    }
 
 }

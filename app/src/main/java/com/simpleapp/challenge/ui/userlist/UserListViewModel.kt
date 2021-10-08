@@ -20,6 +20,7 @@ class UserListViewModel @Inject constructor(
 
   sealed class Event {
     data class FailedToFetchUserList(val errorMessage: String?) : Event()
+    data class NavigateToUserDetails(val userDetails: UserDetails) : Event()
   }
 
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -44,6 +45,12 @@ class UserListViewModel @Inject constructor(
       }
     }
 
+  }
+
+  fun navigateToUserDetails(userDetails: UserDetails) {
+    viewModelScope.launch {
+      eventChannel.send(Event.NavigateToUserDetails(userDetails))
+    }
   }
 
 }
