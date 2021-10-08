@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.simpleapp.challenge.data.model.UserDetails
 import com.simpleapp.challenge.data.remote.ApiService
+import com.simpleapp.challenge.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -16,10 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserListViewModel @Inject constructor(
-  private val apiService: ApiService
+  private val apiService: ApiService,
+  private val authRepository: AuthRepository
 ) : ViewModel() {
 
   sealed class Event {
+    object NavigateToLogin : Event()
     data class FailedToFetchUserList(val errorMessage: String?) : Event()
     data class NavigateToUserDetails(val userDetails: UserDetails) : Event()
   }
@@ -58,6 +61,14 @@ class UserListViewModel @Inject constructor(
   fun navigateToUserDetails(userDetails: UserDetails) {
     viewModelScope.launch {
       eventChannel.send(Event.NavigateToUserDetails(userDetails))
+    }
+  }
+
+  fun logOut() {
+    viewModelScope.launch {
+      authRepository.logOutUser()
+      authRepository.setUserLoggedOut()
+      eventChannel.send(Event.NavigateToLogin)
     }
   }
 
