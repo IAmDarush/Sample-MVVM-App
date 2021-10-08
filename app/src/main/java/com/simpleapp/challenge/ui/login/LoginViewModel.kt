@@ -35,7 +35,7 @@ class LoginViewModel @Inject constructor(
   private val _showLoading = MutableLiveData(false)
   val showLoading: LiveData<Boolean> = _showLoading
 
-  fun login(userName: String, password: String, country: String) {
+  fun login(userName: String, password: String, country: String, rememberLogin: Boolean = false) {
     _showLoading.value = true
 
     val model = LoginModel(userName, password, country)
@@ -59,6 +59,9 @@ class LoginViewModel @Inject constructor(
                 }
                 else {
                   eventChannel.send(Event.SuccessfullyLoggedIn)
+                  if (rememberLogin) {
+                    authRepository.setUserLoggedIn()
+                  }
                   eventChannel.send(Event.NavigateToUserList)
                 }
               }

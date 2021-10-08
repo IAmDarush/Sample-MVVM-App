@@ -112,4 +112,20 @@ class LoginViewModelTest {
       Mockito.verify(mockAuthRepository, Mockito.times(1)).registerUser(user)
     }
 
+  @Test
+  fun givenUserIsSuccessfullyLoggedIn_whenUserWantsToRememberLogin_thenSaveTheLoginState(): Unit =
+    runBlocking {
+      val user = User.create("john", "1234", "UK")
+      doReturn(user).`when`(mockAuthRepository).getUserByUsername(user.username)
+
+      vm.login(userName = "john", password = "1234", country = "UK", rememberLogin = true)
+
+      Mockito.verify(mockAuthRepository, Mockito.times(1)).setUserLoggedIn()
+      assertEquals(2, eventsList.size)
+      assertEquals(Event.SuccessfullyLoggedIn, eventsList[0])
+      assertEquals(Event.NavigateToUserList, eventsList[1])
+      assertEquals(false, vm.showLoading.value)
+      Mockito.verify(mockAuthRepository, Mockito.times(1)).getUserByUsername("john")
+    }
+
 }
