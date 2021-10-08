@@ -1,20 +1,14 @@
 package com.simpleapp.challenge.ui.main
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.viewModelScope
 import com.simpleapp.challenge.data.repository.AuthRepository
-import kotlinx.coroutines.Dispatchers
+import com.simpleapp.challenge.ui.base.BaseViewModelTest
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.resetMain
-import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
@@ -22,13 +16,7 @@ import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class MainViewModelTest {
-
-  @ExperimentalCoroutinesApi
-  val dispatcher = TestCoroutineDispatcher()
-
-  @get:Rule
-  val rule = InstantTaskExecutorRule()
+class MainViewModelTest : BaseViewModelTest() {
 
   @Mock
   private lateinit var mockAuthRepository: AuthRepository
@@ -37,15 +25,8 @@ class MainViewModelTest {
   private val eventsList = mutableListOf<MainViewModel.Event>()
 
   @ExperimentalCoroutinesApi
-  @Before
-  fun setup() {
-    Dispatchers.setMain(dispatcher)
-  }
-
-  @ExperimentalCoroutinesApi
   @After
   fun tearDown() {
-    Dispatchers.resetMain()
     eventsList.clear()
   }
 
