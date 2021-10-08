@@ -8,7 +8,9 @@ import com.simpleapp.challenge.data.model.UserDetails
 import com.simpleapp.challenge.databinding.ItemUserListBinding
 import com.simpleapp.challenge.ui.base.BaseViewHolder
 
-class UserListRecyclerAdapter: RecyclerView.Adapter<UserListRecyclerAdapter.ViewHolder>() {
+class UserListRecyclerAdapter(
+  private val viewModel: UserListViewModel
+) : RecyclerView.Adapter<UserListRecyclerAdapter.ViewHolder>() {
 
   private val items: MutableList<UserDetails> = mutableListOf()
 
@@ -33,7 +35,7 @@ class UserListRecyclerAdapter: RecyclerView.Adapter<UserListRecyclerAdapter.View
     return items.size
   }
 
-  inner class ViewHolder(private val binding: ItemUserListBinding): BaseViewHolder(binding.root) {
+  inner class ViewHolder(private val binding: ItemUserListBinding) : BaseViewHolder(binding.root) {
 
     override fun clear() {
       binding.tvName.text = ""
@@ -44,10 +46,8 @@ class UserListRecyclerAdapter: RecyclerView.Adapter<UserListRecyclerAdapter.View
       super.onBind(position)
 
       val user = items[position]
-
-      binding.tvName.text = user.name
-      binding.tvEmail.text = user.email
-
+      binding.user = user
+      binding.viewModel = viewModel
     }
 
   }

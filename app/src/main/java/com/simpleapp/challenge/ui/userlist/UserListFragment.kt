@@ -19,11 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class UserListFragment: Fragment() {
+class UserListFragment : Fragment() {
 
   lateinit var binding: FragmentUserListBinding
   val viewModel: UserListViewModel by activityViewModels()
-  private val adapter: UserListRecyclerAdapter by lazy { UserListRecyclerAdapter() }
+  private val adapter: UserListRecyclerAdapter by lazy { UserListRecyclerAdapter(viewModel) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)

@@ -5,17 +5,27 @@
 
   <data>
 
+    <variable
+      name="user"
+      type="com.simpleapp.challenge.data.model.UserDetails" />
+
+    <variable
+      name="viewModel"
+      type="com.simpleapp.challenge.ui.userlist.UserListViewModel" />
+
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:onClick="@{ () -> viewModel.navigateToUserDetails(user) }"
     android:padding="12dp">
 
     <com.google.android.material.textview.MaterialTextView
       android:id="@+id/tvName"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:text="@{ user.name }"
       android:textAppearance="?textAppearanceHeadline6"
       android:textColor="@color/black"
       app:layout_constraintEnd_toEndOf="parent"
@@ -27,6 +37,7 @@
       android:id="@+id/tvEmail"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:text="@{ user.email }"
       android:textAppearance="?textAppearanceSubtitle1"
       android:textColor="@color/black"
       app:layout_constraintEnd_toEndOf="parent"
