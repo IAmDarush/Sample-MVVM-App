@@ -51,6 +51,9 @@ class LoginViewModel @Inject constructor(
                   User.create(username = userName, password = password, country = country)
                 authRepository.registerUser(newUser)
                 eventChannel.send(Event.SuccessfullyRegistered)
+                if (rememberLogin) {
+                  authRepository.setUserLoggedIn()
+                }
                 eventChannel.send(Event.NavigateToUserList)
               }
               else -> {
