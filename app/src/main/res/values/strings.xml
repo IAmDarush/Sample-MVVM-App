@@ -16,4 +16,5 @@
   <string name="login_prompt_incorrect_password">Incorrect password</string>
   <string name="login_prompt_login_successful">Successfully logged in</string>
   <string name="login_prompt_register_successful">Successfully registered</string>
+  <string name="login_checkbox_remember_login">remember login</string>
 </resources>
