@@ -59,6 +59,7 @@ class UserListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
+    setupToolbar()
     setupRecyclerView()
   }
 
@@ -75,6 +76,15 @@ class UserListFragment : Fragment() {
     viewModel.userList.observe(viewLifecycleOwner, { list ->
       adapter.updateItemsList(list)
     })
+  }
+
+  private fun setupToolbar() {
+    (requireActivity() as UserListActivity).supportActionBar?.apply {
+      setDisplayHomeAsUpEnabled(false)
+      setHomeButtonEnabled(false)
+      setHasOptionsMenu(true)
+      setTitle(R.string.title_activity_user_list)
+    }
   }
 
   private fun navigateToLogin() {
