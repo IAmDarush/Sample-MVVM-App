@@ -19,7 +19,7 @@ class UserListViewModel @Inject constructor(
 ) : ViewModel() {
 
   sealed class Event {
-
+    data class FailedToFetchUserList(val errorMessage: String?) : Event()
   }
 
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -28,16 +28,22 @@ class UserListViewModel @Inject constructor(
   private val _userList = MutableLiveData<List<UserDetails>>()
   val userList: LiveData<List<UserDetails>> = _userList
 
+  private val _userListIsVisible = MutableLiveData(false)
+  val userListIsVisible: LiveData<Boolean> = _userListIsVisible
+
   init {
 
     viewModelScope.launch {
-      fetchUserList()
+      try {
+        _userList.value = apiService.getUsers()
+        _userListIsVisible.value = true
+      }
+      catch (e: Exception) {
+        _userListIsVisible.value = false
+        eventChannel.send(Event.FailedToFetchUserList(e.message))
+      }
     }
 
-  }
-
-  private suspend fun fetchUserList() {
-    _userList.value = apiService.getUsers()
   }
 
 }
