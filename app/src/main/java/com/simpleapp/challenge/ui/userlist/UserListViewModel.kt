@@ -39,6 +39,9 @@ class UserListViewModel @Inject constructor(
   private val _showLoading = MutableLiveData(false)
   val showLoading: LiveData<Boolean> = _showLoading
 
+  private val _selectedUser = MutableLiveData<UserDetails>()
+  val selectedUser: LiveData<UserDetails> = _selectedUser
+
   init {
 
     viewModelScope.launch {
@@ -60,6 +63,7 @@ class UserListViewModel @Inject constructor(
 
   fun navigateToUserDetails(userDetails: UserDetails) {
     viewModelScope.launch {
+      _selectedUser.value = userDetails
       eventChannel.send(Event.NavigateToUserDetails(userDetails))
     }
   }
