@@ -2,10 +2,11 @@ package com.simpleapp.challenge.ui.userlist
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -35,6 +36,18 @@ class UserDetailsFragment : Fragment() {
     return when (item.itemId) {
       android.R.id.home -> findNavController().popBackStack()
       else              -> super.onOptionsItemSelected(item)
+    }
+  }
+
+  override fun onPrepareOptionsMenu(menu: Menu) {
+    setOptionsMenuItemVisible(menu, R.id.menu_logout, false)
+    super.onPrepareOptionsMenu(menu)
+  }
+
+  private fun setOptionsMenuItemVisible(menu: Menu, @IdRes itemId: Int, isVisible: Boolean) {
+    val menuItem = menu.findItem(itemId)
+    if (menuItem != null) {
+      menuItem.isVisible = isVisible
     }
   }
 
