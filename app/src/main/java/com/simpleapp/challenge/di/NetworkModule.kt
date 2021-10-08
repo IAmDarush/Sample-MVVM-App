@@ -57,7 +57,6 @@ object NetworkModule {
   @Singleton
   fun provideGsonBuilder(): Gson {
     return GsonBuilder()
-      .excludeFieldsWithoutExposeAnnotation()
       .create()
   }
 
