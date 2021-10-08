@@ -2,9 +2,13 @@ package com.simpleapp.challenge.data.repository
 
 import com.simpleapp.challenge.data.local.UserDao
 import com.simpleapp.challenge.data.model.User
+import com.simpleapp.challenge.data.prefs.AuthDataStore
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(private val userDao: UserDao) : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(
+  private val userDao: UserDao,
+  private val authDataStore: AuthDataStore
+) : AuthRepository {
 
   override suspend fun registerUser(user: User) {
     userDao.insert(user)
@@ -25,5 +29,11 @@ class AuthRepositoryImpl @Inject constructor(private val userDao: UserDao) : Aut
   override suspend fun logOutUser() {
     userDao.deleteAllUsers()
   }
+
+  override suspend fun setUserLoggedIn() = authDataStore.logInUser()
+
+  override suspend fun isUserLoggedIn() = authDataStore.isUserLoggedIn()
+
+  override suspend fun setUserLoggedOut() = authDataStore.logOutUser()
 
 }

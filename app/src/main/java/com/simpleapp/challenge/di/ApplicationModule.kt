@@ -7,6 +7,8 @@ import androidx.room.Room
 import com.simpleapp.challenge.BuildConfig
 import com.simpleapp.challenge.data.local.AppDatabase
 import com.simpleapp.challenge.data.local.UserDao
+import com.simpleapp.challenge.data.prefs.AuthDataStore
+import com.simpleapp.challenge.data.prefs.AuthDataStoreImpl
 import com.simpleapp.challenge.data.repository.AuthRepository
 import com.simpleapp.challenge.data.repository.AuthRepositoryImpl
 import dagger.Module
@@ -49,8 +51,14 @@ object ApplicationModule {
 
   @Provides
   @Singleton
-  fun provideAuthRepository(userDao: UserDao): AuthRepository {
-    return AuthRepositoryImpl(userDao)
+  fun provideAuthDataStore(@ApplicationContext context: Context): AuthDataStore {
+    return AuthDataStoreImpl(context)
+  }
+
+  @Provides
+  @Singleton
+  fun provideAuthRepository(userDao: UserDao, authDataStore: AuthDataStore): AuthRepository {
+    return AuthRepositoryImpl(userDao, authDataStore)
   }
 
 }
