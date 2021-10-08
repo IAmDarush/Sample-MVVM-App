@@ -68,6 +68,7 @@ class UserListViewModel @Inject constructor(
     viewModelScope.launch {
       authRepository.logOutUser()
       authRepository.setUserLoggedOut()
+      Timber.d("User logged out")
       eventChannel.send(Event.NavigateToLogin)
     }
   }

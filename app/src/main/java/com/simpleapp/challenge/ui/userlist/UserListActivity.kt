@@ -1,6 +1,9 @@
 package com.simpleapp.challenge.ui.userlist
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simpleapp.challenge.R
 import com.simpleapp.challenge.databinding.ActivityUserListBinding
+import com.simpleapp.challenge.ui.login.LoginActivity
 import com.simpleapp.challenge.ui.userlist.UserListViewModel.Event
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -40,11 +44,29 @@ class UserListActivity : AppCompatActivity() {
               event.errorMessage ?: getString(R.string.userlist_prompt_failed_to_fetch_user_list)
             Toast.makeText(this@UserListActivity, message, Toast.LENGTH_LONG).show()
           }
+          is Event.NavigateToLogin       -> {
+            navigateToLogin()
+          }
         }
       }
     }
 
     setupRecyclerView()
+  }
+
+  override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.options_menu, menu)
+    return true
+  }
+
+  override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    return when (item.itemId) {
+      R.id.menu_logout -> {
+        viewModel.logOut()
+        true
+      }
+      else             -> super.onOptionsItemSelected(item)
+    }
   }
 
   private fun setupRecyclerView() {
@@ -60,6 +82,11 @@ class UserListActivity : AppCompatActivity() {
     viewModel.userList.observe(this, { list ->
       adapter.updateItemsList(list)
     })
+  }
+
+  private fun navigateToLogin() {
+    startActivity(Intent(this, LoginActivity::class.java))
+    finish()
   }
 
   private fun navigateToUserDetails() {
