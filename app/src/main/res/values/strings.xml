@@ -17,4 +17,6 @@
   <string name="login_prompt_login_successful">Successfully logged in</string>
   <string name="login_prompt_register_successful">Successfully registered</string>
   <string name="login_checkbox_remember_login">remember login</string>
+  <string name="userlist_prompt_failed_to_fetch_user_list">Failed to fetch the user list</string>
+  <string name="action_logout">Logout</string>
 </resources>

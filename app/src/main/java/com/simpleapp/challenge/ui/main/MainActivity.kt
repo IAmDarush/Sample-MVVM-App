@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import com.simpleapp.challenge.databinding.ActivityMainBinding
 import com.simpleapp.challenge.ui.login.LoginActivity
 import com.simpleapp.challenge.ui.main.MainViewModel.Event
+import com.simpleapp.challenge.ui.userlist.UserListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -43,7 +44,8 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun navigateToUserList() {
-    TODO("navigate to user list")
+    startActivity(Intent(this@MainActivity, UserListActivity::class.java))
+    finish()
   }
 
 }

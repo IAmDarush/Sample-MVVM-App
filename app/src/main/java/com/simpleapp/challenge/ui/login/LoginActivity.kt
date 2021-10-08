@@ -1,5 +1,6 @@
 package com.simpleapp.challenge.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.simpleapp.challenge.R
 import com.simpleapp.challenge.databinding.ActivityLoginBinding
 import com.simpleapp.challenge.ui.login.LoginViewModel.Event
+import com.simpleapp.challenge.ui.userlist.UserListActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -59,12 +61,17 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
           }
           is Event.NavigateToUserList          -> {
-            Toast.makeText(applicationContext, "Navigate to user list", Toast.LENGTH_SHORT).show()
+            navigateToUserList()
           }
         }
       }
     }
 
+  }
+
+  private fun navigateToUserList() {
+    startActivity(Intent(this, UserListActivity::class.java))
+    finish()
   }
 
 }
