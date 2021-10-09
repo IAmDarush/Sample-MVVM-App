@@ -21,4 +21,12 @@
   <string name="action_logout">Logout</string>
   <string name="title_activity_user_list">Users List</string>
   <string name="title_fragment_user_details">User Details</string>
+  <string name="title_fragment_user_location">User Location</string>
+  <string name="userdetails_label_name">Name:</string>
+  <string name="userdetails_label_username">Username:</string>
+  <string name="userdetails_label_email">Email:</string>
+  <string name="userdetails_label_phone">Phone:</string>
+  <string name="userdetails_label_company_name">Company name:</string>
+  <string name="userdetails_label_website">Website:</string>
+  <string name="userdetails_action_show_location">Show location</string>
 </resources>

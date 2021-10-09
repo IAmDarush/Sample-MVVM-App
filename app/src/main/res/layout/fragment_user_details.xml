@@ -6,15 +6,19 @@
   <data>
 
     <variable
+      name="user"
+      type="com.simpleapp.challenge.data.model.UserDetails" />
+
+    <variable
       name="viewModel"
       type="com.simpleapp.challenge.ui.userlist.UserListViewModel" />
 
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     tools:context=".ui.userlist.UserListActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -28,7 +32,7 @@
       android:id="@+id/labelName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Name:"
+      android:text="@string/userdetails_label_name"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +41,7 @@
       android:id="@+id/tvName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.name }"
+      android:text="@{ user.name }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelName"
@@ -47,7 +51,7 @@
       android:id="@+id/labelUsername"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Username:"
+      android:text="@string/userdetails_label_username"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelName" />
@@ -56,7 +60,7 @@
       android:id="@+id/tvUsername"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.username }"
+      android:text="@{ user.username }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelUsername"
@@ -66,7 +70,7 @@
       android:id="@+id/labelEmail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Email:"
+      android:text="@string/userdetails_label_email"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelUsername" />
@@ -75,7 +79,7 @@
       android:id="@+id/tvEmail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.email }"
+      android:text="@{ user.email }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelEmail"
@@ -85,7 +89,7 @@
       android:id="@+id/labelPhone"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Phone:"
+      android:text="@string/userdetails_label_phone"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelEmail" />
@@ -94,7 +98,7 @@
       android:id="@+id/tvPhone"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.phone }"
+      android:text="@{ user.phone }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelPhone"
@@ -104,7 +108,7 @@
       android:id="@+id/labelCompanyName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Company name:"
+      android:text="@string/userdetails_label_company_name"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelPhone" />
@@ -113,7 +117,7 @@
       android:id="@+id/tvCompanyName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.company.name }"
+      android:text="@{ user.company.name }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelCompanyName"
@@ -123,7 +127,7 @@
       android:id="@+id/labelWebsite"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Website:"
+      android:text="@string/userdetails_label_website"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelCompanyName" />
@@ -133,11 +137,21 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:linksClickable="true"
-      android:text="@{ viewModel.selectedUser.website }"
+      android:text="@{ user.website }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelWebsite"
       tools:text="anastasia.net" />
+
+    <com.google.android.material.button.MaterialButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:onClick="@{ () -> viewModel.showUserLocation(user) }"
+      android:text="@string/userdetails_action_show_location"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/labelWebsite" />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

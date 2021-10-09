@@ -7,20 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.simpleapp.challenge.R
 import com.simpleapp.challenge.databinding.FragmentUserListBinding
+import com.simpleapp.challenge.ui.base.BaseFragment
 import com.simpleapp.challenge.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class UserListFragment : Fragment() {
+class UserListFragment : BaseFragment() {
 
   lateinit var binding: FragmentUserListBinding
   val viewModel: UserListViewModel by activityViewModels()
@@ -29,24 +32,32 @@ class UserListFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    lifecycleScope.launchWhenResumed {
-      viewModel.eventsFlow.collect { event ->
-        when (event) {
-          is UserListViewModel.Event.NavigateToUserDetails -> {
-            navigateToUserDetails()
-          }
-          is UserListViewModel.Event.FailedToFetchUserList -> {
-            val message =
-              event.errorMessage ?: getString(R.string.userlist_prompt_failed_to_fetch_user_list)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-          }
-          is UserListViewModel.Event.NavigateToLogin       -> {
-            navigateToLogin()
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.RESUMED) {
+        viewModel.eventsFlow.collect { event ->
+          when (event) {
+            is UserListViewModel.Event.NavigateToUserDetails -> {
+              navigateToUserDetails()
+            }
+            is UserListViewModel.Event.FailedToFetchUserList -> {
+              val message =
+                event.errorMessage ?: getString(R.string.userlist_prompt_failed_to_fetch_user_list)
+              Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            }
+            is UserListViewModel.Event.NavigateToLogin       -> {
+              navigateToLogin()
+            }
+            else                                             -> {
+            }
           }
         }
       }
     }
 
+  }
+
+  override fun getToolbarTitle(): String {
+    return getString(R.string.title_activity_user_list)
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -59,7 +70,7 @@ class UserListFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    setupToolbar()
+    setHomeButtonEnabled(false)
     setupRecyclerView()
   }
 
@@ -76,15 +87,6 @@ class UserListFragment : Fragment() {
     viewModel.userList.observe(viewLifecycleOwner, { list ->
       adapter.updateItemsList(list)
     })
-  }
-
-  private fun setupToolbar() {
-    (requireActivity() as UserListActivity).supportActionBar?.apply {
-      setDisplayHomeAsUpEnabled(false)
-      setHomeButtonEnabled(false)
-      setHasOptionsMenu(true)
-      setTitle(R.string.title_activity_user_list)
-    }
   }
 
   private fun navigateToLogin() {
