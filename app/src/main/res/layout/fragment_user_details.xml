@@ -32,7 +32,7 @@
       android:id="@+id/labelName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Name:"
+      android:text="@string/userdetails_label_name"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent" />
@@ -51,7 +51,7 @@
       android:id="@+id/labelUsername"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Username:"
+      android:text="@string/userdetails_label_username"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelName" />
@@ -70,7 +70,7 @@
       android:id="@+id/labelEmail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Email:"
+      android:text="@string/userdetails_label_email"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelUsername" />
@@ -89,7 +89,7 @@
       android:id="@+id/labelPhone"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Phone:"
+      android:text="@string/userdetails_label_phone"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelEmail" />
@@ -108,7 +108,7 @@
       android:id="@+id/labelCompanyName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Company name:"
+      android:text="@string/userdetails_label_company_name"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelPhone" />
@@ -127,7 +127,7 @@
       android:id="@+id/labelWebsite"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="Website:"
+      android:text="@string/userdetails_label_website"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelCompanyName" />
@@ -144,11 +144,11 @@
       tools:text="anastasia.net" />
 
     <com.google.android.material.button.MaterialButton
-      android:onClick="@{ () -> viewModel.showUserLocation(user) }"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="16dp"
-      android:text="Show location"
+      android:onClick="@{ () -> viewModel.showUserLocation(user) }"
+      android:text="@string/userdetails_action_show_location"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/labelWebsite" />
