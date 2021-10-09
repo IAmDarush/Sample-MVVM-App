@@ -21,6 +21,7 @@ class UserDetailsFragment : Fragment() {
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
     binding.viewModel = viewModel
+    binding.user = viewModel.selectedUser.value
     binding.lifecycleOwner = viewLifecycleOwner
     return binding.root
   }

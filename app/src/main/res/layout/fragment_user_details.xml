@@ -6,15 +6,19 @@
   <data>
 
     <variable
+      name="user"
+      type="com.simpleapp.challenge.data.model.UserDetails" />
+
+    <variable
       name="viewModel"
       type="com.simpleapp.challenge.ui.userlist.UserListViewModel" />
 
   </data>
 
   <androidx.constraintlayout.widget.ConstraintLayout
-    android:padding="12dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     tools:context=".ui.userlist.UserListActivity">
 
     <androidx.constraintlayout.widget.Guideline
@@ -37,7 +41,7 @@
       android:id="@+id/tvName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.name }"
+      android:text="@{ user.name }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelName"
@@ -56,7 +60,7 @@
       android:id="@+id/tvUsername"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.username }"
+      android:text="@{ user.username }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelUsername"
@@ -75,7 +79,7 @@
       android:id="@+id/tvEmail"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.email }"
+      android:text="@{ user.email }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelEmail"
@@ -94,7 +98,7 @@
       android:id="@+id/tvPhone"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.phone }"
+      android:text="@{ user.phone }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelPhone"
@@ -113,7 +117,7 @@
       android:id="@+id/tvCompanyName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@{ viewModel.selectedUser.company.name }"
+      android:text="@{ user.company.name }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelCompanyName"
@@ -133,7 +137,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:linksClickable="true"
-      android:text="@{ viewModel.selectedUser.website }"
+      android:text="@{ user.website }"
       android:textAppearance="?textAppearanceSubtitle1"
       app:layout_constraintStart_toStartOf="@id/verticalGuideline"
       app:layout_constraintTop_toTopOf="@id/labelWebsite"
