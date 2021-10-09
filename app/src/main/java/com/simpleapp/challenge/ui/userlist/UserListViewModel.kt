@@ -25,6 +25,7 @@ class UserListViewModel @Inject constructor(
     object NavigateToLogin : Event()
     data class FailedToFetchUserList(val errorMessage: String?) : Event()
     data class NavigateToUserDetails(val userDetails: UserDetails) : Event()
+    data class NavigateToMaps(val userDetails: UserDetails): Event()
   }
 
   private val eventChannel = Channel<Event>(Channel.BUFFERED)
@@ -74,6 +75,12 @@ class UserListViewModel @Inject constructor(
       authRepository.setUserLoggedOut()
       Timber.d("User logged out")
       eventChannel.send(Event.NavigateToLogin)
+    }
+  }
+
+  fun showUserLocation(userDetails: UserDetails) {
+    viewModelScope.launch {
+      eventChannel.send(Event.NavigateToMaps(userDetails))
     }
   }
 

@@ -113,4 +113,21 @@ class UserListViewModelTest : BaseViewModelTest() {
       assertTrue(events.contains(Event.NavigateToLogin))
     }
 
+  @Test
+  fun givenTheUserDetailsAreDisplayed_whenTheUserWantsToViewTheLocation_thenShowTheLocation(): Unit =
+    runBlocking {
+      Mockito.`when`(mockApiService.getUsers()).thenReturn(users)
+      vm = UserListViewModel(mockApiService, mockAuthRepository)
+      val userList = vm.userList.value ?: listOf()
+      val events = mutableListOf<Event>()
+      vm.viewModelScope.launch {
+        vm.eventsFlow.collect { event -> events.add(event) }
+      }
+      vm.navigateToUserDetails(userList[0])
+
+      vm.showUserLocation(userList[0])
+
+      assertEquals(Event.NavigateToMaps(userList[0]), events.last())
+    }
+
 }
