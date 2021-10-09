@@ -3,11 +3,8 @@ package com.simpleapp.challenge.ui.userlist
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,11 +12,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.simpleapp.challenge.R
 import com.simpleapp.challenge.databinding.FragmentUserDetailsBinding
-import kotlinx.coroutines.flow.collect
+import com.simpleapp.challenge.ui.base.BaseFragment
 import com.simpleapp.challenge.ui.userlist.UserListViewModel.Event
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-class UserDetailsFragment : Fragment() {
+class UserDetailsFragment : BaseFragment() {
 
   lateinit var binding: FragmentUserDetailsBinding
   private val viewModel: UserListViewModel by activityViewModels()
@@ -44,6 +42,10 @@ class UserDetailsFragment : Fragment() {
 
   }
 
+  override fun getToolbarTitle(): String {
+    return getString(R.string.title_fragment_user_details)
+  }
+
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
     binding.viewModel = viewModel
@@ -55,36 +57,12 @@ class UserDetailsFragment : Fragment() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
 
-    setupToolbar()
-
-  }
-
-  override fun onOptionsItemSelected(item: MenuItem): Boolean {
-    return when (item.itemId) {
-      android.R.id.home -> findNavController().popBackStack()
-      else              -> super.onOptionsItemSelected(item)
-    }
+    setHomeButtonEnabled(true)
   }
 
   override fun onPrepareOptionsMenu(menu: Menu) {
     setOptionsMenuItemVisible(menu, R.id.menu_logout, false)
     super.onPrepareOptionsMenu(menu)
-  }
-
-  private fun setOptionsMenuItemVisible(menu: Menu, @IdRes itemId: Int, isVisible: Boolean) {
-    val menuItem = menu.findItem(itemId)
-    if (menuItem != null) {
-      menuItem.isVisible = isVisible
-    }
-  }
-
-  private fun setupToolbar() {
-    (requireActivity() as UserListActivity).supportActionBar?.apply {
-      setDisplayHomeAsUpEnabled(true)
-      setHomeButtonEnabled(true)
-      setHasOptionsMenu(true)
-      setTitle(R.string.title_fragment_user_details)
-    }
   }
 
   private fun navigateToMaps() {
