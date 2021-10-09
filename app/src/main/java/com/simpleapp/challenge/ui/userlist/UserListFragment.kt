@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +20,7 @@ import com.simpleapp.challenge.databinding.FragmentUserListBinding
 import com.simpleapp.challenge.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class UserListFragment : Fragment() {
@@ -29,19 +32,23 @@ class UserListFragment : Fragment() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    lifecycleScope.launchWhenResumed {
-      viewModel.eventsFlow.collect { event ->
-        when (event) {
-          is UserListViewModel.Event.NavigateToUserDetails -> {
-            navigateToUserDetails()
-          }
-          is UserListViewModel.Event.FailedToFetchUserList -> {
-            val message =
-              event.errorMessage ?: getString(R.string.userlist_prompt_failed_to_fetch_user_list)
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-          }
-          is UserListViewModel.Event.NavigateToLogin       -> {
-            navigateToLogin()
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.RESUMED) {
+        viewModel.eventsFlow.collect { event ->
+          when (event) {
+            is UserListViewModel.Event.NavigateToUserDetails -> {
+              navigateToUserDetails()
+            }
+            is UserListViewModel.Event.FailedToFetchUserList -> {
+              val message =
+                event.errorMessage ?: getString(R.string.userlist_prompt_failed_to_fetch_user_list)
+              Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+            }
+            is UserListViewModel.Event.NavigateToLogin       -> {
+              navigateToLogin()
+            }
+            else                                             -> {
+            }
           }
         }
       }
