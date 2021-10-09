@@ -110,7 +110,7 @@
       android:layout_marginTop="16dp"
       android:layout_marginBottom="64dp"
       android:enabled="@{ !viewModel.showLoading }"
-      android:onClick="@{() -> viewModel.login(username.getText().toString(), password.getText().toString(), username.getText().toString(), cbRememberLogin.isChecked()) }"
+      android:onClick="@{() -> viewModel.login(username.getText().toString(), password.getText().toString(), countryPicker.getSelectedCountryName(), cbRememberLogin.isChecked()) }"
       android:text="@string/action_sign_in"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
