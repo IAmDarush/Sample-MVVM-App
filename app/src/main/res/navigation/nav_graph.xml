@@ -23,6 +23,20 @@
     android:id="@+id/userDetailsFragment"
     android:name="com.simpleapp.challenge.ui.userlist.UserDetailsFragment"
     android:label="UserDetailsFragment"
-    tools:layout="@layout/fragment_user_details" />
+    tools:layout="@layout/fragment_user_details">
+    <action
+      android:id="@+id/action_userDetailsFragment_to_mapsFragment"
+      app:destination="@id/mapsFragment"
+      app:enterAnim="@anim/slide_in_right"
+      app:exitAnim="@anim/slide_out_left"
+      app:popEnterAnim="@anim/slide_in_left"
+      app:popExitAnim="@anim/slide_out_right" />
+  </fragment>
+
+  <fragment
+    android:id="@+id/mapsFragment"
+    android:name="com.simpleapp.challenge.ui.userlist.MapsFragment"
+    android:label="fragment_maps"
+    tools:layout="@layout/fragment_maps" />
 
 </navigation>

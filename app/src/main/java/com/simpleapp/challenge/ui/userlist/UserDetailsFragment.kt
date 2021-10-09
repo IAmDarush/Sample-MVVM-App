@@ -9,14 +9,40 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.simpleapp.challenge.R
 import com.simpleapp.challenge.databinding.FragmentUserDetailsBinding
+import kotlinx.coroutines.flow.collect
+import com.simpleapp.challenge.ui.userlist.UserListViewModel.Event
+import kotlinx.coroutines.launch
 
 class UserDetailsFragment : Fragment() {
 
   lateinit var binding: FragmentUserDetailsBinding
   private val viewModel: UserListViewModel by activityViewModels()
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.RESUMED) {
+        viewModel.eventsFlow.collect { event ->
+          when (event) {
+            is Event.NavigateToMaps -> {
+              navigateToMaps()
+            }
+            else                    -> {
+              //
+            }
+          }
+        }
+      }
+    }
+
+  }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     binding = FragmentUserDetailsBinding.inflate(inflater, container, false)
@@ -58,6 +84,12 @@ class UserDetailsFragment : Fragment() {
       setHomeButtonEnabled(true)
       setHasOptionsMenu(true)
       setTitle(R.string.title_fragment_user_details)
+    }
+  }
+
+  private fun navigateToMaps() {
+    UserDetailsFragmentDirections.actionUserDetailsFragmentToMapsFragment().let {
+      findNavController().navigate(it)
     }
   }
 
