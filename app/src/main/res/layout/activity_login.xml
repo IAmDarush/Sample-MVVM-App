@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="com.simpleapp.challenge.ui.login.LoginViewModel" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".ui.login.LoginActivity">
+
+    <EditText
+      android:id="@+id/username"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="96dp"
+      android:autofillHints="username"
+      android:hint="@string/prompt_username"
+      android:inputType="text"
+      android:minHeight="48dp"
+      android:selectAllOnFocus="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+      android:id="@+id/password"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:autofillHints="password"
+      android:hint="@string/prompt_password"
+      android:imeActionLabel="@string/action_sign_in_short"
+      android:imeOptions="actionDone"
+      android:inputType="textPassword"
+      android:minHeight="48dp"
+      android:selectAllOnFocus="true"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <com.hbb20.CountryCodePicker
+      android:id="@+id/countryPicker"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="12dp"
+      app:ccpDialog_allowSearch="true"
+      app:ccpDialog_fastScroller_bubbleColor="@color/purple_200"
+      app:ccpDialog_fastScroller_bubbleTextAppearance="?textAppearanceHeadline6"
+      app:ccpDialog_fastScroller_handleColor="@color/purple_200"
+      app:ccpDialog_initialScrollToSelection="true"
+      app:ccpDialog_keyboardAutoPopup="false"
+      app:ccpDialog_searchEditTextTint="@color/purple_200"
+      app:ccpDialog_showCloseIcon="true"
+      app:ccpDialog_showFastScroller="true"
+      app:ccpDialog_showFlag="true"
+      app:ccpDialog_showPhoneCode="false"
+      app:ccpDialog_showTitle="true"
+      app:ccpDialog_textColor="@color/black"
+      app:ccp_arrowColor="@color/black"
+      app:ccp_arrowSize="20dp"
+      app:ccp_autoDetectCountry="true"
+      app:ccp_autoDetectLanguage="true"
+      app:ccp_autoFormatNumber="false"
+      app:ccp_clickable="true"
+      app:ccp_contentColor="@color/black"
+      app:ccp_countryAutoDetectionPref="SIM_ONLY"
+      app:ccp_defaultNameCode="US"
+      app:ccp_flagBorderColor="@color/teal_200"
+      app:ccp_hintExampleNumber="true"
+      app:ccp_rememberLastSelection="false"
+      app:ccp_selectionMemoryTag="signupCCP"
+      app:ccp_showArrow="true"
+      app:ccp_showFlag="true"
+      app:ccp_showFullName="true"
+      app:ccp_showNameCode="true"
+      app:ccp_showPhoneCode="false"
+      app:ccp_textGravity="LEFT"
+      app:ccp_textSize="18sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/password" />
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+      android:id="@+id/cbRememberLogin"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/login_checkbox_remember_login"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/countryPicker" />
+
+    <Button
+      android:id="@+id/login"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="start"
+      android:layout_marginTop="16dp"
+      android:layout_marginBottom="64dp"
+      android:enabled="@{ !viewModel.showLoading }"
+      android:onClick="@{() -> viewModel.login(username.getText().toString(), password.getText().toString(), countryPicker.getSelectedCountryName(), cbRememberLogin.isChecked()) }"
+      android:text="@string/action_sign_in"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cbRememberLogin" />
+
+    <ProgressBar
+      android:id="@+id/loading"
+      isVisible="@{ viewModel.showLoading }"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="64dp"
+      android:layout_marginBottom="64dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@+id/password"
+      app:layout_constraintStart_toStartOf="@+id/password"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.3" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

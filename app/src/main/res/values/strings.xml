@@ -1,3 +1,32 @@
 <resources>
   <string name="app_name">Simple App</string>
+  <string name="title_activity_login">LoginActivity</string>
+  <string name="prompt_username">User name</string>
+  <string name="login_error_username_is_required">User name is required</string>
+  <string name="prompt_password">Password</string>
+  <string name="login_error_password">Password is required</string>
+  <string name="action_sign_in">Sign in or register</string>
+  <string name="action_sign_in_short">Sign in</string>
+  <string name="welcome">"Welcome !"</string>
+  <string name="invalid_username">Not a valid username</string>
+  <string name="invalid_password">Password must be >5 characters</string>
+  <string name="login_failed">"Login failed"</string>
+  <string name="login_toast_fill_all_inputs">Please fill all the inputs</string>
+  <string name="login_toast_unknown_server_error">Unknown server error</string>
+  <string name="login_prompt_incorrect_password">Incorrect password</string>
+  <string name="login_prompt_login_successful">Successfully logged in</string>
+  <string name="login_prompt_register_successful">Successfully registered</string>
+  <string name="login_checkbox_remember_login">remember login</string>
+  <string name="userlist_prompt_failed_to_fetch_user_list">Failed to fetch the user list</string>
+  <string name="action_logout">Logout</string>
+  <string name="title_activity_user_list">Users List</string>
+  <string name="title_fragment_user_details">User Details</string>
+  <string name="title_fragment_user_location">User Location</string>
+  <string name="userdetails_label_name">Name:</string>
+  <string name="userdetails_label_username">Username:</string>
+  <string name="userdetails_label_email">Email:</string>
+  <string name="userdetails_label_phone">Phone:</string>
+  <string name="userdetails_label_company_name">Company name:</string>
+  <string name="userdetails_label_website">Website:</string>
+  <string name="userdetails_action_show_location">Show location</string>
 </resources>

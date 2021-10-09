@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools">
+
+  <data>
+
+    <variable
+      name="user"
+      type="com.simpleapp.challenge.data.model.UserDetails" />
+
+    <variable
+      name="viewModel"
+      type="com.simpleapp.challenge.ui.userlist.UserListViewModel" />
+
+  </data>
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:clickable="true"
+    android:background="?selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:onClick="@{ () -> viewModel.navigateToUserDetails(user) }"
+    android:padding="12dp"
+    android:focusable="true">
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/tvName"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@{ user.name }"
+      android:textAppearance="?textAppearanceHeadline6"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Jane Doe" />
+
+    <com.google.android.material.textview.MaterialTextView
+      android:id="@+id/tvEmail"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@{ user.email }"
+      android:textAppearance="?textAppearanceSubtitle1"
+      android:textColor="@color/black"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tvName"
+      tools:text="jane_doe@gmail.com" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
