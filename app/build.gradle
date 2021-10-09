@@ -5,6 +5,7 @@ plugins {
     id "dagger.hilt.android.plugin"
     id "kotlinx-serialization"
     id "androidx.navigation.safeargs.kotlin"
+    id "com.google.android.libraries.mapsplatform.secrets-gradle-plugin"
 }
 
 android {
@@ -57,6 +58,9 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
+
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
     //Kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
