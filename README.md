@@ -1,4 +1,4 @@
-# Simple App
+# Simple MVVM App
 This is a simple app showcasing the MVVM architecture using Android Jetpack Components such as: DataBinding, Lifecycles, LiveData, Room, ViewModel, DataStore and dependency injection with Hilt.
 
 ## TODO::
